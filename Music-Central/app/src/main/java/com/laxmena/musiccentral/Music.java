@@ -6,6 +6,7 @@ public class Music {
     String musicUrl;
     int thumbnail;
 
+    // Constructor for Music Object
     public Music(String title, String artistName, String musicUrl, int thumbnail) {
         this.title = title;
         this.artistName = artistName;
@@ -13,6 +14,7 @@ public class Music {
         this.thumbnail = thumbnail;
     }
 
+    // Getter Methods:
     public String getTitle() {
         return title;
     }

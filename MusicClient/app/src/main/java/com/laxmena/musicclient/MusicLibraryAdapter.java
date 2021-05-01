@@ -20,6 +20,7 @@ public class MusicLibraryAdapter extends RecyclerView.Adapter<MusicLibraryAdapte
     private ArrayList<Bitmap> thumbnails;
     private RVClickListener listener;
 
+    // Constructor for Array Adapter
     public MusicLibraryAdapter(ArrayList<String> songTitles,
                                ArrayList<String> artistNames,
                                ArrayList<Bitmap> thumbnails,
@@ -32,6 +33,7 @@ public class MusicLibraryAdapter extends RecyclerView.Adapter<MusicLibraryAdapte
         System.out.println("MusicLibraryAdapter: " + songTitles.get(0));
     }
 
+    // ViewHolder Defenition
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,11 +52,14 @@ public class MusicLibraryAdapter extends RecyclerView.Adapter<MusicLibraryAdapte
         holder.setThumbnail(this.thumbnails.get(index));
     }
 
+    // Item Count = Number of song titles
     @Override
     public int getItemCount() {
         return songTitles.size();
     }
 
+
+    // View Holder Class for Recycler View
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView thumbnail;
         public TextView songTitle;

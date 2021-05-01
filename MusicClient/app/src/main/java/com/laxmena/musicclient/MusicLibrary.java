@@ -28,6 +28,7 @@ public class MusicLibrary extends AppCompatActivity {
     private MusicLibraryAdapter adapter;
     private MediaPlayer musicPlayer;
 
+    // Constructor function, initiate all values and create Recycler View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,18 +39,14 @@ public class MusicLibrary extends AppCompatActivity {
             songTitles = bundle.getStringArrayList(Constants.TITLE_LIST);
             artistNames = bundle.getStringArrayList(Constants.ARTIST_LIST);
             thumbnails = bundle.getParcelableArrayList(Constants.BITMAP_LIST);
-
-            System.out.println("Thumbnails data: " + thumbnails.size());
         }
 
         mService = MainActivity.getService();
         RVClickListener listener = (view, position) -> {
-            Log.i(TAG, "Selected Song: " + songTitles.get(position));
             try {
                 if(musicPlayer != null) musicPlayer.stop();
 
                 String URL = (String) mService.getSongUrl(position);
-                System.out.println("URL: " + URL);
                 playMusic(URL);
             } catch (RemoteException ex) {
                 ex.printStackTrace();
@@ -71,6 +68,7 @@ public class MusicLibrary extends AppCompatActivity {
         }
     }
 
+    // Method to Play Music
     private void playMusic(String audioUrl) {
         if (musicPlayer != null) {
             musicPlayer.stop();

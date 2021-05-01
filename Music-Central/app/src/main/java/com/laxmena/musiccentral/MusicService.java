@@ -24,20 +24,23 @@ public class MusicService extends Service {
 
     MusicDataProvider dataProvider = null;
 
+    // Constructor for Music Service
     public MusicService() {
         dataProvider = MusicDataProvider.getInstance();
 
         // Start Foreground Service
-//        Intent intent = new Intent(Intent.ACTION_MAIN);
-//        intent.setComponent(new ComponentName("com.laxmena.musicclient", "com.laxmena.musicclient.MainActivity"));
-//        startForegroundService(intent);
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setComponent(new ComponentName("com.laxmena.musicclient", "com.laxmena.musicclient.MainActivity"));
+        startForegroundService(intent);
     }
 
 
+    // Helper Method
     private Bitmap getImageFromResource(int resId) {
         return BitmapFactory.decodeResource(getResources(), resId);
     }
 
+    // Defenition of the AIDL Methods
     private final MusicCentralService.Stub mBinder = new MusicCentralService.Stub() {
         @Override
         public Bundle getMusicList() throws RemoteException {
@@ -61,6 +64,7 @@ public class MusicService extends Service {
             return bundle;
         }
 
+        // Method returns song info for a particular song, given the song id
         @Override
         public Bundle getSongInfo(int songId) throws RemoteException {
             System.out.println("Querying Song info for: " + songId);
@@ -74,11 +78,13 @@ public class MusicService extends Service {
             return bundle;
         }
 
+        // Given the song id, method returns the url
         @Override
         public String getSongUrl(int songId) throws RemoteException {
             return dataProvider.getMusicDetails(songId).getMusicUrl();
         }
 
+        // Method returns Thumbnail image for the given song id
         @Override
         public Bundle getSongThumbnail(int songId) throws RemoteException {
             Bundle bundle = new Bundle();

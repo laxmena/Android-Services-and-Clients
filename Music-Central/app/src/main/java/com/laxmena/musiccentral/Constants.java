@@ -1,5 +1,6 @@
 package com.laxmena.musiccentral;
 
+// COnstnatns file
 public class Constants {
     public static String TITLE = "title";
     public static String TITLE_LIST = "titles_list";

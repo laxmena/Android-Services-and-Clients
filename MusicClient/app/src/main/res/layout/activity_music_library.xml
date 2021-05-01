@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:padding="@dimen/box_inset_layout_padding"
     android:orientation="vertical"
-    tools:context=".MusicLibrary">
+    tools:context=".MusicLibrary"
+    android:background="@drawable/app_bg">
 
 
     <androidx.recyclerview.widget.RecyclerView

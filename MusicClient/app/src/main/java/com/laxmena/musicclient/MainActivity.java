@@ -122,32 +122,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private void bindService() {
         if(!mBound) {
             Intent serviceIntent = new Intent(MusicCentralService.class.getName());
-            Log.i(TAG, "bindService: " + MusicCentralService.class.getName());
-
             ServiceInfo serviceInfo = getPackageManager().resolveService(serviceIntent, 0).serviceInfo;
             serviceIntent.setComponent(new ComponentName(serviceInfo.packageName, serviceInfo.name));
-            Log.i(TAG, "bindService: " + serviceInfo.packageName + " " + serviceInfo.name);
-
-            boolean result = bindService(serviceIntent, this.mServiceConnection, Context.BIND_AUTO_CREATE);
-            if (result) {
-                Log.i(TAG, "bindService successful");
-                updateDisplay();
-            } else {
-                Log.i(TAG, "bindService unsuccessful");
-            }
+            bindService(serviceIntent, this.mServiceConnection, Context.BIND_AUTO_CREATE);
+            updateDisplay();
         }
     }
 
+    // Button Hanlder method
     public void bindButtonOnClick(View view) {
         System.out.println("Binding Service");
         bindService();
     }
 
+    // Button Hanlder method
     public void unbindButtonOnClick(View view) {
         System.out.println("Unbinding Service");
         unbindService();
     }
 
+    // Button Hanlder method: This creates an Intent to Music Library Activity
     public void showMusicOnClick(View view) throws RemoteException {
         if(musicBundle == null) {
             musicBundle = mService.getMusicList();
@@ -157,10 +151,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         startActivity(intent);
     }
 
+    // Getter method for service object
     public static MusicCentralService getService() {
         return mService;
     }
 
+    // When this method is called, it checks the state of the app and updates the UI components.
+    // If the app is not bound to services, only bind button is enabled.
     public void updateDisplay() {
         bind.setEnabled(!mBound);
         unbind.setEnabled(mBound);
@@ -191,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    // Logic to handle Spinner Selection
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         stopMusicPlayer();

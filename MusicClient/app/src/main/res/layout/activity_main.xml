@@ -5,50 +5,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/app_bg">
 
-    <TextView
-        android:id="@+id/status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/gradient_end"
+        android:gravity="center">
+        <TextView
+            android:textColor="@color/black"
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello World!" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/bind"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bind Service!"
-        android:onClick="bindButtonOnClick"/>
-
-
-    <Button
-        android:id="@+id/unbind"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Unbind Service!"
-        android:onClick="unbindButtonOnClick"/>
-
-    <Button
-        android:id="@+id/show_music"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Music Library!"
-        android:onClick="showMusicOnClick"/>
-
-    <TextView
-        android:id="@+id/nowPlaying"
-        android:textSize="18sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="song.."/>
-
-    <Spinner
-        android:id="@+id/planets_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        android:contentDescription="Song List"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="25"
+        android:orientation="vertical"
+        android:gravity="center">
+        <Button
+            android:id="@+id/bind"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Bind Service!"
+            android:onClick="bindButtonOnClick"/>
 
 
+        <Button
+            android:id="@+id/unbind"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Unbind Service!"
+            android:onClick="unbindButtonOnClick"/>
+
+        <Button
+            android:id="@+id/show_music"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Music Library!"
+            android:onClick="showMusicOnClick"/>
+
+        <TextView
+            android:id="@+id/nowPlaying"
+            android:textSize="18sp"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:text="song.."
+            android:gravity="center" />
+
+        <Spinner
+            android:id="@+id/planets_spinner"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:contentDescription="Song List"/>
+
+        </LinearLayout>
 </LinearLayout>

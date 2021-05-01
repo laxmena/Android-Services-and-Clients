@@ -6,6 +6,7 @@ public class MusicDataProvider {
     static MusicDataProvider mSingleton = null;
     private ArrayList<Music> mMusicList = new ArrayList<Music>();
 
+    // Implements singleton design pattern
     public static MusicDataProvider getInstance() {
         if(mSingleton == null) {
             mSingleton = new MusicDataProvider();
@@ -13,6 +14,7 @@ public class MusicDataProvider {
         return mSingleton;
     }
 
+    // Cosntructor method which poppulates all the values
     private MusicDataProvider() {
 
         mMusicList.add(new Music("Song 6",
@@ -37,6 +39,7 @@ public class MusicDataProvider {
                 R.drawable.ic_launcher_background));
     }
 
+    // Getter Methods
     public Music getMusicDetails(int index) {
         return mMusicList.get(index);
     }

@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="@string/song_titles_placeholder"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="?android:textColorPrimary"
+            android:textColor="@color/black"
             android:ellipsize="end"
             android:singleLine="true" />
 
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:text="@string/artist_name_placeholder"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="?android:textColorSecondary"
+            android:textColor="@color/black"
             android:ellipsize="end"
             android:textStyle="italic"
             android:singleLine="true"/>
