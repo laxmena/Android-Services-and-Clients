@@ -79,7 +79,13 @@ public class MusicLibraryAdapter extends RecyclerView.Adapter<MusicLibraryAdapte
         }
 
         public void setThumbnail(Bitmap thumbnail) {
-            this.thumbnail.setImageBitmap(thumbnail);
+            if(thumbnail != null) {
+                this.thumbnail.setImageBitmap(thumbnail);
+            } else {
+                int defImg = getAdapterPosition()%2 == 0?
+                                R.drawable.ham : R.drawable.heart;
+                    this.thumbnail.setImageResource(defImg);
+            }
         }
 
         @Override

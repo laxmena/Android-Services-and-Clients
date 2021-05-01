@@ -8,26 +8,37 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ServiceInfo;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.laxmena.musiccentralservice.MusicCentralService;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import static com.laxmena.musicclient.Constants.*;
 import static com.laxmena.musicclient.Constants.TITLE_LIST;
 
-public class MainActivity extends AppCompatActivity {
-    private boolean mBound = false;
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    private boolean mBound = false, mPlaying = false;
     private static MusicCentralService mService;
     private String TAG = "MainActivity";
     private Bundle musicBundle = null;
     private Button bind, unbind, showMusicLib;
+    private Spinner spinner;
+    MediaPlayer mPlayer;
+    private String nowPlaying;
+    private TextView nowPlayingComponent, status;
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
@@ -55,15 +66,50 @@ public class MainActivity extends AppCompatActivity {
         bind = findViewById(R.id.bind);
         unbind = findViewById(R.id.unbind);
         showMusicLib = findViewById(R.id.show_music);
+        spinner = (Spinner) findViewById(R.id.planets_spinner);
+        nowPlayingComponent = findViewById(R.id.nowPlaying);
+        status = findViewById(R.id.status);
 
+        // Update UI based on mBound status
         updateDisplay();
+
+        // Setup Spinner to list Songs in the UI
+        ArrayAdapter<CharSequence> spinnerArrayAdapter =
+                ArrayAdapter.createFromResource(this,
+                        R.array.songTitles,
+                        R.layout.spinner_item);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerArrayAdapter);
+        spinner.setOnItemSelectedListener(this);
+
     }
 
+    // Method to stop Music Player
+    private void stopMusicPlayer() {
+        if(mPlayer != null)
+            mPlayer.stop();
+    }
+
+    // Method to Start Music Player
+    private void startMusicPlayer(String URL) {
+        mPlayer = new MediaPlayer();
+        try {
+            mPlayer.setDataSource(URL);
+            mPlayer.prepare();
+            mPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Stop Music Player, if the activity stops
     @Override
     protected void onStop() {
         super.onStop();
+        stopMusicPlayer();
     }
 
+    // Method to Unbind from service
     private void unbindService() {
         if(mBound) {
             unbindService(mServiceConnection);
@@ -72,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         updateDisplay();
     }
 
+    // Logic to bind to the service
     private void bindService() {
         if(!mBound) {
             Intent serviceIntent = new Intent(MusicCentralService.class.getName());
@@ -114,38 +161,70 @@ public class MainActivity extends AppCompatActivity {
         return mService;
     }
 
-    private Bundle setAllMusicDetails(Bundle mBundle) {
-        Bundle bundle = new Bundle();
-
-        String[] title = mBundle.getStringArray(TITLE_LIST);
-        String[] artist = mBundle.getStringArray(ARTIST_LIST);
-        Bitmap[] image = new Bitmap[title.length];
-
-        bundle.putStringArray(TITLE_LIST, title);
-        bundle.putStringArray(ARTIST_LIST, artist);
-
-        for (int i = 0; i < title.length; i++) {
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            image[i] = mBundle.getParcelable(title[i]);
-            image[i].compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] byteArray = stream.toByteArray();
-            bundle.putByteArray(title[i], byteArray);
-        }
-
-        return bundle;
-    }
-
     public void updateDisplay() {
         bind.setEnabled(!mBound);
         unbind.setEnabled(mBound);
         showMusicLib.setEnabled(mBound);
-        int bindBG = R.color.enabled;
-        int unbindBG = R.color.disabled;
+        int bindBG, unbindBG;
+
         if(mBound) {
+            status.setText("Status: Binded to Service");
             bindBG = R.color.disabled;
             unbindBG = R.color.enabled;
+            spinner.setVisibility(View.VISIBLE);
+
+        } else {
+            status.setText("Status: Not Binded");
+            bindBG = R.color.enabled;
+            unbindBG = R.color.disabled;
+            spinner.setVisibility(View.INVISIBLE);
         }
         bind.setBackgroundResource(bindBG);
         bind.setBackgroundResource(unbindBG);
+
+        // Make UI Changes if Song is playing now
+        if(mPlaying) {
+            nowPlayingComponent.setVisibility(View.VISIBLE);
+            nowPlayingComponent.setText("Now Playing:");
+        } else {
+            nowPlayingComponent.setVisibility(View.INVISIBLE);
+        }
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        stopMusicPlayer();
+        if (mBound) {
+            if (position == 0) {
+                mPlaying = false;
+            } else {
+                Bundle bundle;
+                try {
+                    bundle = mService.getSongInfo(position - 1);
+                    if(bundle != null) {
+                        nowPlaying = bundle.getString(TITLE);
+                        nowPlayingComponent.setText(nowPlaying);
+                        System.out.println(bundle.getString(TITLE));
+                        mPlaying = true;
+                        startMusicPlayer(mService.getSongUrl(position - 1));
+                    } else {
+                        Toast.makeText(this, "Please wait for few seconds, before trying again.", Toast.LENGTH_LONG).show();
+                    }
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        updateDisplay();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
+
+    private void playMusic(String URL) {
+        startMusicPlayer(URL);
+    }
+
+
 }

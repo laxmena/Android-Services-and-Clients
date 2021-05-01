@@ -9,6 +9,7 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!" />
@@ -34,5 +35,20 @@
         android:layout_height="wrap_content"
         android:text="Music Library!"
         android:onClick="showMusicOnClick"/>
+
+    <TextView
+        android:id="@+id/nowPlaying"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="song.."/>
+
+    <Spinner
+        android:id="@+id/planets_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:contentDescription="Song List"/>
+
 
 </LinearLayout>
