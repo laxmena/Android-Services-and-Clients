@@ -29,9 +29,9 @@ public class MusicService extends Service {
         dataProvider = MusicDataProvider.getInstance();
 
         // Start Foreground Service
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setComponent(new ComponentName("com.laxmena.musicclient", "com.laxmena.musicclient.MainActivity"));
-        startForegroundService(intent);
+//        Intent intent = new Intent(Intent.ACTION_MAIN);
+//        intent.setComponent(new ComponentName("com.laxmena.musicclient", "com.laxmena.musicclient.MainActivity"));
+//        startForegroundService(intent);
     }
 
 
